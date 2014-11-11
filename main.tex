@@ -1,0 +1,135 @@
+\documentclass[sans]{beamer}
+
+\mode<presentation>
+{
+	% \usetheme{CambridgeUS}
+	% \usetheme{Hannover}
+	\usetheme{Singapore}
+	\usecolortheme{default}
+}
+
+\usepackage{cmap}
+\usepackage{listings}
+\usepackage{lmodern}
+\usepackage{color}
+\usepackage{minted}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{wrapfig}
+\usepackage{bussproofs}
+\usepackage{stmaryrd}
+
+\usepackage[labelformat=empty]{caption}
+\usepackage{fontspec}
+% \usepackage{polyglossia}
+% \setdefaultlanguage{russian}
+
+% \setmainfont[Ligatures=TeX]{DejaVu Serif}
+% \setsansfont[Ligatures=TeX]{DejaVu Sans}
+% \setmonofont{DejaVu Sans Mono}
+
+\definecolor{myGray}{RGB}{50,50,50}
+\EnableBpAbbreviations
+
+\begin{document}
+
+\title
+[Concurrency Control]
+{Concurrency Control: Methods, Performance, and Analysis}
+
+\subtitle{Based on Alexander Thomasian paper}
+
+\author
+[Podkopaev]{Anton Podkopaev, podkoav239@gmail.com}
+\institute{SPbSU}
+\date [21-11-14]{21 nov 2014}
+
+\begin{frame}[plain]
+	\titlepage
+\end{frame}
+
+\section{Introduction}
+
+\begin{frame}{Main line}
+  \begin{itemize}
+    \item Comparison of locking methods
+
+    \item Sources of performance degradation with standard locking:
+      \begin{itemize}
+        \item Blocking
+        \item Deadlock
+      \end{itemize}
+
+    \item Restart-oriented locking methods
+    \item Waith-depth-limited (WDL) methods
+
+    \item Restart waiting
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Notions}
+  \begin{itemize}
+    \item Work only with correctness criterion as serializability
+    \begin{itemize}
+      \item It isn't suitable for systems like trading bids
+    \end{itemize}
+    
+    \item Strict 2PL
+    \begin{itemize}
+      \item Locks to be released only when the txn is
+            commited or aborted
+      \item To solve cascading aborts
+    \end{itemize}
+
+    \item Work only with centralized high-performance systems
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Method sets}
+  \begin{itemize}
+    \item Restart-oriented locking
+    \begin{itemize}
+      \item Wait-depth-limited (WDL)
+    \end{itemize}
+
+    \item Two-phase processing methods
+    \begin{itemize}
+      \item Txn re-execution may not require disk I/O
+            in case of big buffer
+    \end{itemize}
+    \item Optimistic CC (OCC)
+    \begin{itemize}
+      \item Viable for two-phase processing
+    \end{itemize}
+    \item Time-stamp ordering (TSO)
+    \begin{itemize}
+      \item For distributed databases
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\section{Model}
+
+\begin{frame}{Hardware and data resource contention}
+  \begin{itemize}
+    \item Hardware contention
+    \begin{itemize}
+      \item The primary effect on performance
+    \end{itemize}
+    \item Data contention
+    \begin{itemize}
+      \item The secondary effect
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\section{Standard Locking}
+
+\section{Restart-Oriented Locking}
+
+\section{Two-phase Processing}
+
+\section{Conclusion}
+
+\end{document}
