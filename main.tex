@@ -19,6 +19,7 @@
 \usepackage{wrapfig}
 \usepackage{bussproofs}
 \usepackage{stmaryrd}
+\usepackage{wasysym}
 
 \usepackage[labelformat=empty]{caption}
 \usepackage{fontspec}
@@ -43,7 +44,7 @@
 \author
 [Podkopaev]{Anton Podkopaev, podkoav239@gmail.com}
 \institute{SPbSU}
-\date [21-11-14]{21 nov 2014}
+\date [21-11-14]{21 november 2014}
 
 \begin{frame}[plain]
 	\titlepage
@@ -403,7 +404,80 @@
       $\beta ^3 - (1.5 \alpha + 1)\beta^2 + (1.5 \alpha + 1)\beta - \alpha = 0$
     \item Note: $\alpha$ is a single metric for the level of lock contention
     \item $\alpha^* = 0.226$ -- indicator for thrashing
+    \begin{itemize}
+      \item $0 \le \beta_1 < \beta_2 \le 1, \beta_3 \ge 1$ in case $\alpha \le \alpha^*$
+      \item Single root $\beta_3 \ge 1$ in case $\alpha > \alpha^*$
+    \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}{A Performance Analysis of DL (const per-step time) (3)}
+  \begin{itemize}
+    \item The peak throughput is attainable when $M_a = M (1 - \beta)$
+    \item $M_a$ is maximizes at $\beta \approx 0.3$
+    \item Peak $\alpha$: $\hat{\alpha} = 0.2135 $
+    \item $\hat{\alpha}$ can be used for \emph{load control}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{A Performance Analysis of DL (different per-step times)}
+  \begin{itemize}
+    \item ... $\leftarrow$ same stuff {\huge \smiley}
+    \item $M_a$ is maximizes at $\beta \approx 0.3$ \textbf{again}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Performance Analyses of SL}
+  \begin{itemize}
+    \item Identites of all required locks are assumed to be known a priori
+    \item The execution of a txn is started only when all locks have been acquired
+    \item Scheduling policies
+      \begin{itemize}
+        \item The strict FCFS
+          \begin{itemize}
+            \item Doesn't satisfy the \emph{essential blocking} property
+          \end{itemize}
+        \item The non strict FCFS
+      \end{itemize}
+    \item Entails an increased lok holding time
+    \item Incremental SL -- form of DL (outperformed by DL)
+    \item Generally, DL outperforms SL for lower degrees of txn concurrency but
+      SL is better when DL thrashes
+  \end{itemize}
+\end{frame}
+
+%\begin{frame}{Performance Analyses of DL}
+  
+%\end{frame}
+
+\begin{frame}{On More Realistic Lock-Contention Models}
+  \begin{itemize}
+    \item The effective database size paradigm (EDSP)
+    \item Shared and exclusive $\rightarrow$ exclusive
+
+    $D \rightarrow D_{eff} = D/(1 - s^2)$, $s$ -- fraction of lock requests
+    that are in share mode
+
+    \vfill
+
+  \item Heterogenous DB access model
+    \begin{itemize}
+      \item A closed system with $M$ txns in $J$ txn classes
+      \item $C_j, f_j, C_{j, n}, D_i$
+      \item Probability: $g_{j, n, i}$
+      \item Bipartite graph: $C_{j, n} \xrightarrow{g_{j, n, i}} D_i$
+      
+      \item \textcolor{myGray}{Acceptable accurate in predicting preformance up to high
+        levels of lock contention, but not the peak throughput with infinite resource
+        model}
+    \end{itemize}
+    
+    \item ...
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Methods to Improve Locking Performance}
+
 \end{frame}
 
 \section{Restart-Oriented Locking}
