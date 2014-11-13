@@ -29,7 +29,7 @@
 % \setsansfont[Ligatures=TeX]{DejaVu Sans}
 % \setmonofont{DejaVu Sans Mono}
 
-\definecolor{myGray}{RGB}{50,50,50}
+\definecolor{myGray}{RGB}{80,80,80}
 \EnableBpAbbreviations
 
 \begin{document}
@@ -272,12 +272,139 @@
 
 \begin{frame}{Separation of Hardware and Data-resource Contention}
   \begin{itemize}
-    \item Desirable property --- allows the system-throughput characteristic (STC) to be computed only once
-    \item Possible in case of insignificant or independent of the level of lock data contention overhead
+    \item Desirable property --- allows the system-throughput 
+      characteristic (STC) to be computed only once
+    \item Possible in case of insignificant or independent of
+      the level of lock data contention overhead
   \end{itemize}
 \end{frame}
 
 \section{Standard Locking}
+
+\begin{frame}{Standard Locking Notions}
+  \begin{itemize}
+    \item Dynamic locking (DL)
+    \item Static locking (SL)
+    \item Strict 2PL
+      \begin{itemize}
+        \item Locks are released at txn completion time 
+      \end{itemize}
+    \item General Waiting (GW) method
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Deadlock resolve techiques (1)}
+  \begin{itemize}
+    \item The victim selection policies
+    \begin{enumerate}
+      \item Current blocker
+      \item Random blocker
+      \item The txn with minimum number of locks
+      \item The youngest txn
+      \item The txn with minimum amount of work 
+    \end{enumerate}
+    \item Deadlock resolution policy has little effect
+      on the maximum attainable throughput
+    \item Cyclic restarts may occur
+    \begin{itemize}
+      \item 4 -- prevents
+      \item 3, 5 -- tend to prevent
+    \end{itemize}
+    \item Restart waiting
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Deadlock resolve techiques (2)}
+  \begin{itemize}
+    \item Shared and exclusive locks
+      \begin{itemize}
+        \item 97\% of deadlocks due to lock promotion
+      \end{itemize}
+    \item Immediate deadlock resolution
+    \item Periodic basis (more appropriate for distributed systems)
+    \item Timeout -- difficult to determine interval
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Dynamic locking with fixed-size txns}
+  \begin{itemize}
+    \item Txn response time $=$ execution time $+$ blocking time
+    \item Blocking time: $u = P_c W$
+    \begin{itemize}
+      \item $P_c$ -- probability of lock conflict
+      \item $W$ -- wait time
+    \end{itemize}
+  \item Response time: $R(M) = (k + 1) s(M_a) + k P_c W$ 
+  \item Effective throughput: $T(M) = M / R(M)$
+  \item Number of locks: $L = k / 2$
+  \item For $i$th lock request: $P_c = \frac{N - i}{D - i} \approx \frac{(M - 1) L}{D}
+    \approx \frac{(M - 1) k}{2D}$
+  \item $P_w = 1 - (1 - P_c)^k \approx k P_c \approx \frac{(M - 1) k ^2}{2D}$
+  \item $P_D \approx P_D(2) = \frac{P_w^2}{M - 1} \approx \frac{(M - 1)k^4}{4D^2}  $
+  \item Fraction of time txns are blocked: $\beta = \frac{k P_c W}{R(M)} = \frac{M_b}{M}$
+  \item Waiting time: $W_1 = \sum_{j = 1}^{k}
+    \frac{2j}{k(k + 1)} [(k - j)(s(M_a) + u) + s'(M_a)] = \frac{k-1}{3}[s(M_a) + u] + s'(M_a)$
+  \end{itemize}
+\end{frame}
+
+
+\newcommand{\sk}{\sum_{k = 1}^{K}}
+
+\begin{frame}{Dynamic locking with variable-size txns}
+  \begin{itemize}
+    \item $K_i = \sum_{k = 1}^{K} k^i f_k$
+    \item $R_k(M) = (k + 1) s(M_a) + kP_cW$
+    \item $R(M) = \sum_{k = 1}^{K} R_k(M) f_k = r(M_a) + K_1P_cW$, where
+
+      $r(M_a) = (K_1 + 1) s(M_a)$
+    \item $R(M) = \frac{r(M_a)}{1 - \beta}$
+    \item $L = \frac{1}{M} \sk L_k M_k \approx \frac{1}{M} \sk \frac{k}{2} M_k
+      \approx \frac{1}{2K_1}\sk k^2 f_k = \frac{K_2}{2K_1}$
+  \end{itemize}
+
+  \vfill
+  Simulation has shown accuracy of the analysis
+\end{frame}
+
+\begin{frame}{A Performance Analysis of DL (const per-step time) (1)}
+  \begin{itemize}
+    \item Considering there are no deadlocks
+    \item Waits-for graph (WFG)
+    \begin{itemize}
+      \item Exclusive locks -- \emph{Tree}
+      \item Shared locks -- \emph{DAG}
+      \item \emph{Wait depth}
+      \item Only three levels of WFG -- based on simulation
+    \end{itemize}
+    \item Probability of being blocked by active txn: $1 - \beta$ 
+    \item Mean blokcing time: $W_1 (W_2 = 1.5W_1)$
+    \item $P_b(i) = \beta^{i - 1}, i > 1$
+    \item $P_b(1) = 1 - \beta - \beta^2 - \beta^3 ...$
+    \item $W_i = (i - 0.5)W_1$
+    \item $W = \sum_{i \ge 1}P_b(i)W_i = W_1[1 - \sum_{i \ge 1} \beta^i +
+      \sum_{i > 1}(i - 0.5)\beta^{i - 1}]$
+    \item Number of lock conflicts per txn: $n_c = K_1P_c$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{A Performance Analysis of DL (const per-step time) (2)}
+  \begin{itemize}
+    \item $\alpha = n_c W_1 / R(M)$
+    \item $\beta = n_cW/R(M)$
+    \item $\beta = \alpha(1 + 0.5\beta + 1.5\beta^2 + 2.5\beta^3 + ...)$
+    \item At low lock-contention levels:
+      \begin{itemize}
+        \item $\beta \approx \alpha$
+        \item $M_a \approx M (1- \alpha)$
+      \end{itemize}
+    \item Closed systems: $R(M)\approx r(M) / (1 - \alpha)$
+    \item Open systems: $R(\lambda)\approx r(\lambda) / (1 - \alpha)$
+    \item Can approximate, since $\beta < 1$:
+      $\beta ^3 - (1.5 \alpha + 1)\beta^2 + (1.5 \alpha + 1)\beta - \alpha = 0$
+    \item Note: $\alpha$ is a single metric for the level of lock contention
+    \item $\alpha^* = 0.226$ -- indicator for thrashing
+  \end{itemize}
+\end{frame}
 
 \section{Restart-Oriented Locking}
 
