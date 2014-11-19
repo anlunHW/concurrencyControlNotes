@@ -499,7 +499,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Methods}
+\begin{frame}{Methods (1)}
   \begin{itemize}
     \item The no-waiting (NW) restart method
       \begin{itemize}
@@ -520,15 +520,68 @@
         \item $T_A$ is immediately aborted
         \item Deadlock free
       \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Methods (2)}
+  \begin{itemize}
     \item The WDL($d$), $d \geq 1$ family of methods
       \begin{itemize}
         \item Limits the wait depth
         \item Conflicts are resolved by comparing of the txn lengths
       \end{itemize}
+    \item The wound-wait (WW) method
+      \begin{itemize}
+        \item Blocks $T_A$ requesting a lock held by $T_B$ if $T_A$
+          is not older than $T_B$; otherwise $T_B$ is aborted
+        \item Deadlock free
+      \end{itemize}
+    \item The wait-die (WD) method
+      \begin{itemize}
+        \item Allows a younger txn to wait if it is blocked by an older 
+          txn; otherwise the txn encountering a lock conflict is aborted
+        \item Txn age is determined by the arrival-time timestamp
+        \item Deadlock free
+      \end{itemize}
   \end{itemize}
 \end{frame}
 
-\section{Two-phase Processing}
+\begin{frame}{Properties}
+  \begin{itemize}
+    \item Txn timestamps in WW and WD are \emph{static attributes}
+    \item In WDL -- \emph{dynamic attribute}
+      \begin{itemize}
+        \item The number of locks currently held by a txn
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Txn aborts and restarts}
+  Different methods:
+  \begin{enumerate}
+    \item Method delays the restart of aborted txn until \enph{all} txns
+      that have
+      conflicted with it are completed
+    \item Random delays or conflict avoidance delays
+    \item Immediate restarts in system with backlog of txn
+  \end{enumerate}
+\end{frame}
+
+\section{Two-Phase Processing}
+
+\begin{frame}{Two-Phase Processing Methods and Access Invariance}
+  \begin{itemize}
+    \item The first phase of txn execution may lead to commit,
+      but anyway its execution prefetches data from disk 
+    \item Such methods increase the chance of successfully re-executing
+      txns
+    \item \emph{Access invariance}
+      \begin{itemize}
+        \item Logical: txn acesses the same logical objects
+        \item Physical: txn acesses the same physical objects
+      \end{itemize}
+  \end{itemize}
+\end{frame}
 
 \section{Conclusion}
 
