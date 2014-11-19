@@ -476,11 +476,57 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Methods to Improve Locking Performance}
+% \begin{frame}{Methods to Improve Locking Performance}
 
-\end{frame}
+% \end{frame}
 
 \section{Restart-Oriented Locking}
+
+\begin{frame}{Restart-Oriented Locking}
+  \begin{itemize}
+    \item Combines blocking and aborts to cope with the performance
+          limitations of standard locking
+    \item Methods:
+      \begin{itemize}
+        \item The no-waiting (NW) restart method
+        \item The asymmetric running priority (RPA) method
+        \item The symmetric running priority (RPS) method
+        \item The asymmetric cautions waiting (CWA) method
+        \item The WDL($d$), $d \geq 1$ family of methods
+        \item The wound-wait (WW) method
+        \item The wait-die (WD) method
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Methods}
+  \begin{itemize}
+    \item The no-waiting (NW) restart method
+      \begin{itemize}
+        \item The WFG $T_A \rightarrow T_B$
+        \item $T_A$ is immediately aborted
+        \item The wait depth is $d = 0$
+      \end{itemize}
+    \item The asymmetric running priority (RPA) method
+      \begin{itemize}
+        \item The WFG $T_A \rightarrow T_B \rightarrow T_C$
+        \item $T_B$ is immediately aborted
+        \item Partially fulfills the strict essential blocking property
+        \item Deadlock free
+      \end{itemize}
+    \item The asymmetric cautions waiting (CWA) method
+      \begin{itemize}
+        \item The WFG $T_A \rightarrow T_B \rightarrow T_C$
+        \item $T_A$ is immediately aborted
+        \item Deadlock free
+      \end{itemize}
+    \item The WDL($d$), $d \geq 1$ family of methods
+      \begin{itemize}
+        \item Limits the wait depth
+        \item Conflicts are resolved by comparing of the txn lengths
+      \end{itemize}
+  \end{itemize}
+\end{frame}
 
 \section{Two-phase Processing}
 
