@@ -616,4 +616,21 @@
 
 \section{Conclusion}
 
+\begin{frame}{Conclusions}
+  \begin{itemize}
+    \item Standard locking is desirable in lowlock-contention
+      environments
+      \begin{itemize}
+        \item Introduces a minimal amount of extra processing by
+          aborting txns only to resolve deadlocks
+        \item Low level -- in relational DBMSs fine-tuned for
+          txn processing
+      \end{itemize}
+    \item There are no robust load-control methods to prevent thrashing
+    \item The WDL method with restart-waiting provides an solution and
+      attains much higher txn throughput
+    \item Two-phase processing methods are benefiticial in systems with
+      longer txn response timnes due to disk I/O or remote accesses
+   \end{itemize}
+\end{frame}
 \end{document}
