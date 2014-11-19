@@ -559,7 +559,7 @@
 \begin{frame}{Txn aborts and restarts}
   Different methods:
   \begin{enumerate}
-    \item Method delays the restart of aborted txn until \enph{all} txns
+    \item Method delays the restart of aborted txn until \emph{all} txns
       that have
       conflicted with it are completed
     \item Random delays or conflict avoidance delays
@@ -580,6 +580,37 @@
         \item Logical: txn acesses the same logical objects
         \item Physical: txn acesses the same physical objects
       \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Optimistic Concurrency Control}
+  \begin{itemize}
+    \item Less suitable for DBMSs with high-performance txn proccesing
+    \item Phases:
+      \begin{enumerate}
+        \item During read phase txns access "clean" copies of DB objects
+        \item Validation
+
+         A read-only txns are considered completed after a
+          successfull validation
+        \item Txns initiates commit processing
+      \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Associated Mechanisms}
+  \begin{itemize}
+    \item Txn phases
+    \item Running modes
+      \begin{itemize}
+        \item Virtual Execution
+        \item Optimistic die and kill
+        \item Locking
+      \end{itemize}
+    \item Locking priorities
+    \item Txn spawning
+    \item Checkpointing at the txn level
+    \item CPU priorities
   \end{itemize}
 \end{frame}
 
